@@ -1,35 +1,43 @@
 import React from 'react';
-import Split from './Split/Split';
+import List from './List/list.js'
 import './App.css';
-import Tooltip from './Tooltip/Tooltip';
 
-// make 2 tooltips here and another inside the App directly
-const firstTooltip = (
-  <Tooltip color='hotpink' message='tooltip message'>
-   ipsum
-  </Tooltip>
-)
-const secondTooltip = (
-  <Tooltip color='#126BCC' message='another tooltip message'>
-    officiis
-  </Tooltip>
-)
+class App extends React.Component {
+  static defaultProps = {
+    store: { lists: [], allCards: {}, }
+  };
 
-function App() {
-  return (
-    <main className='App'>
-      <Split className='left' flexBasis='2'>
-        This is the content for the left Split. Lorem {firstTooltip} dolor sit amet consectetur, adipisicing elit. Incidunt ex velit suscipit facere officia?<br />
-        {/* make another tooltip directly inside the App */}
-        <Tooltip message='one more tooltip message'>
-          Necessitatibus?
-        </Tooltip>
-      </Split>
-      <Split className='right'>
-        This is the content for the right Split. Inventore aliquid cupiditate suscipit repellat. Quaerat quis {secondTooltip} quam fuga. Aliquid quo possimus id soluta aspernatur.
-      </Split>
-    </main>
-  )
+  state = {
+    store: this.props.store
+  }
+
+  handleDeleteClick = (index) => {
+    console.log(`clicked delete button at ${index}`); 
+    console.log(this.props.store.lists[0].index); 
+    // const newCardIds = this.props.store.lists[0].cardIds.filter(cardId => cardId !== index); 
+    // return newCardIds; 
+  }
+  
+  render() {
+    const { store } = this.state
+    return (
+      <main className='App'>
+        <header className='App-header'>
+          <h1>Trelloyes!</h1>
+        </header>
+        <div className='App-list'>
+          {store.lists.map(list => (
+            <List
+              key={list.id}
+              header={list.header}
+              cards={list.cardIds.map(id => store.allCards[id])}
+              handleDeleteClick = {this.handleDeleteClick}
+            />
+          ))}
+        </div>
+      </main>
+    );
+  }
 }
 
 export default App;
