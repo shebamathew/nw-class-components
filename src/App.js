@@ -1,6 +1,7 @@
 import React from 'react';
 import List from './List/list.js'
 import './App.css';
+import Store from './store'; 
 
 class App extends React.Component {
   static defaultProps = {
@@ -9,13 +10,16 @@ class App extends React.Component {
 
   state = {
     store: this.props.store
-  }
+    // store: Store, 
+  }; 
 
   handleDeleteClick = (index) => {
-    console.log(`clicked delete button at ${index}`); 
-    console.log(this.props.store.lists[0].index); 
-    // const newCardIds = this.props.store.lists[0].cardIds.filter(cardId => cardId !== index); 
-    // return newCardIds; 
+    // console.log(`clicked delete button at ${index}`); 
+    const firstList = this.props.store.lists[0]; 
+    const cardsToShow = firstList.cardIds.filter(function(cardId, index) {
+      return cardId[index];
+    }); 
+    console.log(cardsToShow); 
   }
   
   render() {
